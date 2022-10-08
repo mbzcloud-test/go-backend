@@ -20,20 +20,20 @@ jobs:
       - name: Build
         run: go build -v ./...
 
-      - name: Upload build artifacts 📤
-        uses: actions/upload-artifact@v3
-        with:
-          name: go-build # name of zip on deploy
-          path: hello # after-build directory to deploy
-          if-no-files-found: error
+      # - name: Upload build artifacts 📤
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: go-build # name of zip on deploy
+      #     path: hello # after-build directory to deploy
+      #     if-no-files-found: error
 
-      - name: Download artifact 📥
-        uses: actions/download-artifact@v3
-        with:
-          name: go-build
-          path: .
+      # - name: Download artifact 📥
+      #   uses: actions/download-artifact@v3
+      #   with:
+      #     name: go-build
+      #     path: .
 
-      - name: Display structure of downloaded files
-        run: ls -R
+      # - name: Display structure of downloaded files
+      #   run: ls -R
 #     - name: Test
 #       run: go test -v ./...
