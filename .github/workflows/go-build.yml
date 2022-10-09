@@ -12,13 +12,29 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up Go
-        uses: actions/setup-go@v3
+      # ssh into runner vm:
+      - id: "compute-ssh"
+        uses: "google-github-actions/ssh-compute@v0"
         with:
-          go-version: 1.18
+          instance_name: "mbzcloud-2"
+          zone: "us-central1-a"
+          ssh_private_key: "${{ secrets.GCP_SSH_PRIVATE_KEY }}"
+          command: |
+            "echo Hello world! am in the cloud."
+            mkdir thetest
+            ls -R
 
-      - name: Build
-        run: go build -v ./...
+      - name: Display structure of downloaded files
+        run: ls -R
+
+      # - name: Set up Go
+      #   uses: actions/setup-go@v3
+      #   with:
+      #     go-version: 1.18
+
+      # # build the artifact
+      # - name: Build
+      #   run: go build -v ./...
 
       # - name: Upload build artifacts 📤
       #   uses: actions/upload-artifact@v3
@@ -35,5 +51,6 @@ jobs:
 
       # - name: Display structure of downloaded files
       #   run: ls -R
-#     - name: Test
-#       run: go test -v ./...
+
+      # - name: Test
+      #   run: go test -v ./...
