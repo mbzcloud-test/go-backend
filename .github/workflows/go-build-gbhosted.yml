@@ -21,11 +21,11 @@ jobs:
       - name: Build
         run: go build -v ./...
 
-      - name: "Upload Artifact"
-        uses: actions/upload-artifact@v3
-        with:
-          #name: build
-          path: build
+      # - name: "Upload Artifact"
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     #name: build
+      #     path: build
 
       # upload artifact
       - name: Upload build artifacts 📤
