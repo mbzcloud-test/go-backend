@@ -1,0 +1,71 @@
+name: Go
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.18
+
+      # build the artifact
+      - name: Build
+        run: go build -v ./...
+
+      - name: "Upload Artifact"
+        uses: actions/upload-artifact@v3
+        with:
+          #name: build
+          path: build
+
+      # upload artifact
+      - name: Upload build artifacts 📤
+        uses: actions/upload-artifact@v3
+        with:
+          name: bmanager # name of zip on deploy
+          path: hello # after-build directory to deploy
+          if-no-files-found: error
+          retention-days: 5
+
+      - name: Download all workflow run artifacts 📥
+        uses: actions/download-artifact@v3
+        id: download
+        with:
+          name: bmanager
+        #   path: src
+
+      - name: "Echo download path"
+        run: echo ${{steps.download.outputs.download-path}}
+
+      - name: Deploy to other repo
+        uses: manzoorwanijk/action-deploy-to-repo@master
+        with:
+          src_dir: bmanager
+          target_owner: mbzcloud-test
+          target_repo: react-builds
+          target_dir: go-binary
+          target_branch: main # default
+          # Optional
+          access_token: ${{ secrets.GH_PACKAGE_PAT }}
+          cleanup_command: "rm -rf assets/* && rm -f assets/asset-manifest.json"
+
+      # - name: Download artifact 📥
+      #   uses: actions/download-artifact@v3
+      #   with:
+      #     name: go-build
+      #     path: .
+
+      # - name: Display structure of downloaded files
+      #   run: ls -R
+
+      # - name: Test
+      #   run: go test -v ./...
