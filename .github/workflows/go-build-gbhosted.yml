@@ -31,7 +31,7 @@ jobs:
       - name: Upload build artifacts 📤
         uses: actions/upload-artifact@v3
         with:
-          name: bmanager # name of zip on deploy
+          #name: bmanager # name of zip on deploy
           path: hello # after-build directory to deploy
           if-no-files-found: error
           retention-days: 5
@@ -39,9 +39,9 @@ jobs:
       - name: Download all workflow run artifacts 📥
         uses: actions/download-artifact@v3
         id: download
-        with:
-          name: bmanager
-        #   path: src
+        # with:
+        #   name: bmanager
+        # #   path: src
 
       - name: "Echo download path"
         run: echo ${{steps.download.outputs.download-path}}
@@ -49,7 +49,7 @@ jobs:
       - name: Deploy to other repo
         uses: manzoorwanijk/action-deploy-to-repo@master
         with:
-          src_dir: bmanager
+          src_dir: hello
           target_owner: mbzcloud-test
           target_repo: react-builds
           target_dir: go-binary
