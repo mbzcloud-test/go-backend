@@ -21,12 +21,12 @@ jobs:
 
       # ssh into runner vm:
       - id: "compute-ssh"
-        name: "SSH to Google Cloud"
+        name: "SSH to Google Cloud Instance"
         uses: "google-github-actions/ssh-compute@v0"
         with:
           instance_name: "mbzcloud-2"
           zone: "us-central1-a"
-          #ssh_private_key: "${{ secrets.GCP_SSH_PRIVATE_KEY }}"
+          ssh_private_key: "${{ secrets.GCP_SSH_PRIVATE_KEY }}"
           command: |
             "echo Hello world! am in the cloud."
             mkdir thetest
