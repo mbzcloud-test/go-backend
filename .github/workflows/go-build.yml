@@ -12,20 +12,28 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      # authenticating the Cloud SDK
+      - id: "auth"
+        name: "Authenticate to Google Cloud"
+        uses: "google-github-actions/auth@v0"
+        with:
+          credentials_json: "${{ secrets.GOOGLE_CREDENTIALS }}"
+
       # ssh into runner vm:
       - id: "compute-ssh"
+        name: "SSH to Google Cloud"
         uses: "google-github-actions/ssh-compute@v0"
         with:
           instance_name: "mbzcloud-2"
           zone: "us-central1-a"
-          ssh_private_key: "${{ secrets.GCP_SSH_PRIVATE_KEY }}"
+          #ssh_private_key: "${{ secrets.GCP_SSH_PRIVATE_KEY }}"
           command: |
             "echo Hello world! am in the cloud."
             mkdir thetest
             ls -R
 
-      - name: Display structure of downloaded files
-        run: ls -R
+      # - name: Display structure of downloaded files
+      #   run: ls -R
 
       # - name: Set up Go
       #   uses: actions/setup-go@v3
