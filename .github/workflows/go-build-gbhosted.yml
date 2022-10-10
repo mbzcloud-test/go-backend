@@ -32,7 +32,7 @@ jobs:
         uses: rodrigorodriguescosta/checkout@main
         continue-on-error: true
         with:
-          repository: test-react-app
+          repository: mbzcloud-test/test-react-app
           token: ${{ secrets.GH_PACKAGE_PAT }}
           ref: build-artf #${{ env.BRANCH_NAME }}
           path: folder1
