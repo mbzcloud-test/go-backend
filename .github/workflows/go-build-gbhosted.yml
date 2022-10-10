@@ -7,65 +7,88 @@ on:
     branches: ["main"]
 
 jobs:
-  build:
+  # copy react-build from other repo into /infrastructure folder:
+  clone:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
+      #- run: cd infrastructure/web-client
+      #- run: mv /path/to/my/folder /path/to/my/target
 
-      - name: Set up Go
-        uses: actions/setup-go@v3
+      - uses: GuillaumeFalourd/clone-github-repo-action@v3
         with:
-          go-version: 1.18
+          owner: mbzcloud-test
+          repository: test-react-app
+          access-token: ${{ secrets.GH_PACKAGE_PAT }}
+          path-to-clone: infrastructure/web-client
 
-      # build the artifact
-      - name: Build
-        run: go build -v ./...
+      - name: Display structure of downloaded files
+        run: ls -R
 
-      # - name: "Upload Artifact"
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     #name: build
-      #     path: build
+  # build go with added react-build:
+  # build:
+  #   runs-on: ubuntu-latest
+  #   needs: clone
 
-      # upload artifact
-      - name: Upload build artifacts 📤
-        uses: actions/upload-artifact@v3
-        with:
-          #name: bmanager # name of zip on deploy
-          path: hello # after-build directory to deploy
-          if-no-files-found: error
-          retention-days: 5
+  #   steps:
+  #     - uses: actions/checkout@v3
 
-      - name: Download all workflow run artifacts 📥
-        uses: actions/download-artifact@v3
-        id: download
-        # with:
-        #   name: bmanager
-        # #   path: src
+  #     - name: Set up Go
+  #       uses: actions/setup-go@v3
+  #       with:
+  #         go-version: 1.18
 
-      - name: "Echo download path"
-        run: echo ${{steps.download.outputs.download-path}}
+  #     # build the artifact
+  #     - name: Build
+  #       run: go build -v ./...
 
-      - name: Deploy to other repo
-        uses: manzoorwanijk/action-deploy-to-repo@master
-        with:
-          src_dir: hello
-          target_owner: mbzcloud-test
-          target_repo: react-builds
-          target_dir: go-binary
-          target_branch: main # default
-          # Optional
-          access_token: ${{ secrets.GH_PACKAGE_PAT }}
-          cleanup_command: "rm -rf assets/* && rm -f assets/asset-manifest.json"
+  #     # - name: "Upload Artifact"
+  #     #   uses: actions/upload-artifact@v3
+  #     #   with:
+  #     #     #name: build
+  #     #     path: build
 
-      # - name: Download artifact 📥
-      #   uses: actions/download-artifact@v3
-      #   with:
-      #     name: go-build
-      #     path: .
+  #     # upload artifact
+  #     - name: Upload build artifacts 📤
+  #       uses: actions/upload-artifact@v3
+  #       with:
+  #         #name: bmanager # name of zip on deploy
+  #         path: hello # after-build directory to deploy
+  #         if-no-files-found: error
+  #         retention-days: 5
 
-      # - name: Display structure of downloaded files
-      #   run: ls -R
+  #     - name: Download all workflow run artifacts 📥
+  #       uses: actions/download-artifact@v3
+  #       id: download
+  #       # with:
+  #       #   name: bmanager
+  #       # #   path: src
 
-      # - name: Test
-      #   run: go test -v ./...
+  #     - name: "Echo download path"
+  #       run: echo ${{steps.download.outputs.download-path}}
+
+  #     # Store binary to other repo
+  #     - name: Deploy to other repo
+  #       uses: manzoorwanijk/action-deploy-to-repo@master
+  #       with:
+  #         src_dir: hello
+  #         target_owner: mbzcloud-test
+  #         target_repo: react-builds
+  #         target_dir: go-binary
+  #         target_branch: main # default
+  #         # Optional
+  #         access_token: ${{ secrets.GH_PACKAGE_PAT }}
+  #         cleanup_command: "rm -rf assets/* && rm -f assets/asset-manifest.json"
+
+  #     # - name: Download artifact 📥
+  #     #   uses: actions/download-artifact@v3
+  #     #   with:
+  #     #     name: go-build
+  #     #     path: .
+
+  #     # - name: Display structure of downloaded files
+  #     #   run: ls -R
+
+  #     # - name: Test
+  #     #   run: go test -v ./...
