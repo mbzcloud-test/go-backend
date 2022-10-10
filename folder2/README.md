@@ -1,1 +1,1 @@
-### react-build artifacts from storage repo
+### store React-build artifact here
