@@ -21,7 +21,21 @@ jobs:
           owner: mbzcloud-test
           repository: test-react-app
           access-token: ${{ secrets.GH_PACKAGE_PAT }}
-          path-to-clone: infrastructure/web-client
+          path-to-clone: folder1
+
+      - name: Display structure of downloaded files
+        run: ls -R
+
+      #or
+
+      - name: Checkout
+        uses: rodrigorodriguescosta/checkout@main
+        continue-on-error: true
+        with:
+          repository: test-react-app
+          token: ${{ secrets.GH_PACKAGE_PAT }}
+          ref: build-artf #${{ env.BRANCH_NAME }}
+          path: folder1
 
       - name: Display structure of downloaded files
         run: ls -R
