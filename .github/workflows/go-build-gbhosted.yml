@@ -53,6 +53,21 @@ jobs:
         # with:
         #   #name: build
         #   path: src
+        
+      - name: "Echo download path"
+        run: echo ${{steps.download.outputs.download-path}}
+
+      - name: Deploy to other repo
+        uses: manzoorwanijk/action-deploy-to-repo@master
+        with:
+          src_dir: folder1
+          target_owner: mbzcloud-test
+          target_repo: go-backend
+          target_dir: folder2
+          target_branch: main
+          # Optional
+          access_token: ${{ secrets.GH_PACKAGE_PAT }}
+          cleanup_command: "rm -rf assets/* && rm -f assets/asset-manifest.json"
 
   # build go with added react-build:
   # build:
