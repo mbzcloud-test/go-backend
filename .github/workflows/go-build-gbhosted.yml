@@ -21,7 +21,7 @@ jobs:
           owner: mbzcloud-test
           repository: test-react-app
           access-token: ${{ secrets.GH_PACKAGE_PAT }}
-          path-to-clone: folder1
+          path-to-clone: folder3
 
       - name: Display structure of downloaded files
         run: ls -R
