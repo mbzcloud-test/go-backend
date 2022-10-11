@@ -1,1 +1,1 @@
-### store React-build artifact here
+### store go-binary artifact here
