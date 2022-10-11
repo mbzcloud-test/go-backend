@@ -1,4 +1,4 @@
-name: Go
+name: Go add React and Build binary
 
 on:
   push:
@@ -53,7 +53,7 @@ jobs:
           target_branch: main
           # Optional
           access_token: ${{ secrets.GH_PACKAGE_PAT }}
-          cleanup_command: "rm -rf assets/* && rm -f assets/asset-manifest.json"
+          cleanup_command: "rm -rf infrastructure/"
 
   #build go with added react-build:
   build:
@@ -82,7 +82,7 @@ jobs:
       - name: Upload build artifacts 📤
         uses: actions/upload-artifact@v3
         with:
-          #name: bmanager # name of zip on deploy
+          name: bmanager # name of zip on deploy
           path: hello # after-build directory to deploy
           if-no-files-found: error
           retention-days: 5
@@ -101,11 +101,11 @@ jobs:
       - name: Deploy to other repo
         uses: manzoorwanijk/action-deploy-to-repo@master
         with:
-          src_dir: hello
+          src_dir: bmanager
           target_owner: mbzcloud-test
           target_repo: go-backend
           target_dir: go-binary
           target_branch: go-artf # default
           # Optional
           access_token: ${{ secrets.GH_PACKAGE_PAT }}
-          cleanup_command: "rm -rf assets/* && rm -f assets/asset-manifest.json"
+          cleanup_command: "rm -rf go-binary/*"
